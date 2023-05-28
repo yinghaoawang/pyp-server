@@ -1,10 +1,17 @@
 version: '3.4'
 
 services:
-  pyp:
-    image: pyp
+  app1:
     build:
-      context: .
+      context: ./app1
       dockerfile: ./Dockerfile
+
     ports:
-      - 5000:5000
+      - 5002:5000
+  app2:
+      build:
+        context: ./app2
+        dockerfile: ./Dockerfile
+
+      ports:
+        - 5003:5000
