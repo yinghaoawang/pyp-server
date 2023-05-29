@@ -2,16 +2,16 @@ version: '3.4'
 
 services:
   app1:
+    image: app1
     build:
       context: ./app1
       dockerfile: ./Dockerfile
-
     ports:
       - 5002:5000
   app2:
+      image: app2
       build:
         context: ./app2
         dockerfile: ./Dockerfile
-
       ports:
         - 5003:5000
