@@ -8,8 +8,6 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - 5002:5000
-    networks:
-      - mynetwork
   app2:
       image: app2
       build:
@@ -17,10 +15,3 @@ services:
         dockerfile: ./Dockerfile
       ports:
         - 5003:5000
-      networks:
-        - mynetwork
-
-
-networks:
-  mynetwork:
-    driver: bridge
