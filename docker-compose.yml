@@ -4,21 +4,29 @@ services:
   app1:
     image: app1
     build:
-      context: ./app1
+      context: ./api-gateway
       dockerfile: ./Dockerfile
     ports:
       - 5002:5000
+
   app2:
       image: app2
       build:
-        context: ./app2
+        context: ./image-service
         dockerfile: ./Dockerfile
       ports:
         - 5003:5000
+  app3:
+      image: app3
+      build:
+        context: ./user-service
+        dockerfile: ./Dockerfile
+      ports:
+        - 5004:5000
 
   node-app:
     build:
-      context: ./node-app
+      context: ./auth-service
       dockerfile: Dockerfile
     ports:
       - 3002:3000

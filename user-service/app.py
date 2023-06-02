@@ -6,5 +6,4 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     response = requests.get('http://app1:5000')
-    data = response.json()
-    return "Data received: {}".format(data)
+    return response.url
