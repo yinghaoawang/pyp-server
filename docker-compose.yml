@@ -7,7 +7,7 @@ services:
       context: ./api-gateway
       dockerfile: ./Dockerfile
     ports:
-      - 5002:5000
+      - "5002:5000"
 
   app2:
       image: app2
@@ -15,7 +15,7 @@ services:
         context: ./image-service
         dockerfile: ./Dockerfile
       ports:
-        - 5003:5000
+        - "5003:5000"
   app3:
       image: app3
       build:
@@ -29,4 +29,4 @@ services:
       context: ./auth-service
       dockerfile: Dockerfile
     ports:
-      - 3002:3000
+      - "3002:3000"
