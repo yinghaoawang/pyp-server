@@ -21,6 +21,28 @@ app.post('/login', (req, res) => {
   }
 });
 
+app.get('/verify', (req, res) => {
+  let token = req.headers.authorization || req.query.token;
+
+  if (!token) {
+    return res.status(401).json({ error: 'No token provided' });
+  }
+
+  token = token.replace('Bearer ', '');
+
+  try {
+    const decoded = jwt.verify(token, secretKey);
+
+    return res.json({ valid: true });
+  } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Token expired' });
+    }
+    console.error(error);
+    return res.status(401).json({ error: 'Invalid token' });
+  }
+});
+
 function validateCredentials(username, password) {
   return username === 'admin' && password === 'password';
 }
