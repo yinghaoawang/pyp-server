@@ -1,5 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const cors = require('cors');
 
 const config = require('./config');
 
@@ -8,6 +9,7 @@ const { secretKey } = config;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 
 app.post('/login', (req, res) => {
   const { username, password } = req.body;

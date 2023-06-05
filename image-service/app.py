@@ -84,3 +84,7 @@ def delete():
         return jsonify({'message': 'User deleted successfully'})
     else:
         return jsonify({'message': 'User not found'})
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5002)
