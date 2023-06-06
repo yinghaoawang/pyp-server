@@ -1,9 +1,7 @@
 .vscode/
 .idea/
-<<<<<<< HEAD
-=======
 **/.env/
->>>>>>> 3d69dc8761d6d651a0268c22114026300f9802d4
 **/__pycache__/
 **/node_modules/
-
+.*.swp
+**/.*.swp
