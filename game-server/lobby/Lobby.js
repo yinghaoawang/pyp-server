@@ -5,6 +5,10 @@ class Lobby {
     this.hostId;
   }
 
+  getHostId() {
+    return this.hostId;
+  }
+
   getHost() {
     if (hostId == null) {
       console.error('HostID is null');

@@ -15,12 +15,29 @@ class LobbyManager {
     lobby.addUser(user);
     lobbies.set(lobbyId, lobby);
 
+    console.log(`Lobby ${lobbyId} created with host ${user.id}`);
+
     return lobby;
   }
 
-  // removeLobby(lobbyId) {
-    
-  // }
+  removeLobby(lobbyId, userId) {
+    const lobby = lobbies.get(lobbyId);
+    if (lobby == null) {
+      console.error('Lobby does not exist');
+      return;
+    }
+
+    const hostId = lobby.getHostId();
+    const isHost = userId === hostId;
+    if (!isHost || hostId == null) {
+      console.log(userId, hostId);
+      console.error('User is not the host, cannot remove lobby');
+      return;
+    }
+
+    lobbies.delete(lobbyId);
+    console.log(`Lobby ${lobbyId} removed`);
+  }
 
   isUserInLobby(lobbyId, userId) {
     const lobby = lobbies.get(lobbyId);
@@ -31,13 +48,17 @@ class LobbyManager {
     return lobby.getUser(userId) != null;
   }
 
-  isUserInAnyLobby(userId) {
-    for (const [key, value] of lobbies.entries()) {
-      const lobbyId = key;
-      console.log(`checking if ${userId} is in ${lobbyId}`);
-      if (this.isUserInLobby(lobbyId, userId)) return true;
+  findUsersLobby(userId) {
+    for (const [lobbyId, lobby] of lobbies.entries()) {
+      if (this.isUserInLobby(lobbyId, userId)) return lobby;
     }
-    return false;
+
+    console.log('User not in any lobby');
+    return null;
+  }
+
+  isUserInAnyLobby(userId) {
+    return this.findUsersLobby(userId) != null;
   }
 
   getLobby(lobbyId) {
