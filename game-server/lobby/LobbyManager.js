@@ -9,8 +9,7 @@ class LobbyManager {
     const lobbyId = uuidv4();
     const lobby = new Lobby(lobbyId);
     if (lobbies.get(lobbyId) != null) {
-      console.error('Lobby ID is not unique');
-      return;
+      throw new Error('Lobby ID is not unique');
     }
     lobby.addUser(user);
     lobbies.set(lobbyId, lobby);
@@ -23,16 +22,13 @@ class LobbyManager {
   removeLobby(lobbyId, userId) {
     const lobby = lobbies.get(lobbyId);
     if (lobby == null) {
-      console.error('Lobby does not exist');
-      return;
+      throw new Error('Lobby does not exist');
     }
 
     const hostId = lobby.getHostId();
     const isHost = userId === hostId;
     if (!isHost || hostId == null) {
-      console.log(userId, hostId);
-      console.error('User is not the host, cannot remove lobby');
-      return;
+      throw new Error('User is not the host, cannot remove lobby');
     }
 
     lobbies.delete(lobbyId);
@@ -42,8 +38,7 @@ class LobbyManager {
   isUserInLobby(lobbyId, userId) {
     const lobby = lobbies.get(lobbyId);
     if (lobby == null) {
-      console.error('Lobby does not exist');
-      return;
+      throw new Error('Lobby does not exist');
     }
     return lobby.getUser(userId) != null;
   }
@@ -70,10 +65,13 @@ class LobbyManager {
   }
 
   joinLobby(lobbyId, user) {
+    if (this.isUserInAnyLobby(user.id)) {
+      throw new Error('User');
+    }
+
     const lobby = lobbies.get(lobbyId);
     if (lobby == null) {
-      console.error('Lobby does not exist');
-      return;
+      throw new Error('Lobby does not exist');
     }
 
     lobby.addUser(user);
@@ -82,8 +80,7 @@ class LobbyManager {
   leaveLobby(lobbyId, user) {
     const lobby = lobbies.get(lobbyId);
     if (lobby == null) {
-      console.error('Lobby does not exist');
-      return;
+      throw new Error('Lobby does not exist');
     }
     lobby.removeUser(user.id);
   }
