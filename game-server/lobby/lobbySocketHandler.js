@@ -35,7 +35,7 @@ module.exports = {
 
       const { lobbyId } = payload;
 
-      joinLobby(lobbyId, getUser());
+      lobbyManager.joinLobby(lobbyId, getUser());
       socket.emit('joinLobby', { lobbyId: lobby.id });
     });
   }

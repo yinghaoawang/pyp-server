@@ -9,18 +9,24 @@ class LobbyManager {
     const lobbyId = uuidv4();
     const lobby = new Lobby(lobbyId);
     if (lobbies.get(lobbyId) != null) {
-      throw new Error('Lobby ID is not unique');
+      console.error('Lobby ID is not unique');
+      return;
     }
-    lobbies.set(lobbyId, lobby);
     lobby.addUser(user);
+    lobbies.set(lobbyId, lobby);
 
     return lobby;
   }
 
+  // removeLobby(lobbyId) {
+    
+  // }
+
   isUserInLobby(lobbyId, userId) {
     const lobby = lobbies.get(lobbyId);
     if (lobby == null) {
-      throw new Error('Lobby does not exist');
+      console.error('Lobby does not exist');
+      return;
     }
     return lobby.getUser(userId) != null;
   }
@@ -45,7 +51,8 @@ class LobbyManager {
   joinLobby(lobbyId, user) {
     const lobby = lobbies.get(lobbyId);
     if (lobby == null) {
-      throw new Error('Lobby does not exist');
+      console.error('Lobby does not exist');
+      return;
     }
 
     lobby.addUser(user);
@@ -54,7 +61,8 @@ class LobbyManager {
   leaveLobby(lobbyId, user) {
     const lobby = lobbies.get(lobbyId);
     if (lobby == null) {
-      throw new Error('Lobby does not exist');
+      console.error('Lobby does not exist');
+      return;
     }
     lobby.removeUser(user.id);
   }
