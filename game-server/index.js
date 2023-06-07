@@ -6,13 +6,8 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-io.on('connection', (socket) => {
-  console.log('New client connected');
-
-  socket.on('disconnect', () => {
-    console.log('Client disconnected');
-  });
-});
+const socketHandler = require('./socket/socketHandler');
+socketHandler.addListeners(io);
 
 // Start the server and listen on a specific port
 const PORT = process.env.PORT || 9898;
