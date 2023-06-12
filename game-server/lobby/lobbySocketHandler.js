@@ -65,7 +65,7 @@ module.exports = {
       }
     });
 
-    /** Remove the user's current lobby */
+    /** Remove the user's current lobby (must be host) */
     socket.on('removeLobby', (payload) => {
       try {
         const lobby = lobbyManager.findUsersLobby(getUser().id);

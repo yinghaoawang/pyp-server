@@ -4,7 +4,11 @@ const socketIO = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server);
+const io = socketIO(server, {
+  cors: {
+    origin: '*'
+  }
+});
 
 const socketHandler = require('./socket/socketHandler');
 socketHandler.addListeners(io);
