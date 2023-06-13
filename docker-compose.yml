@@ -7,26 +7,29 @@ services:
       context: ./api-gateway
       dockerfile: ./Dockerfile
     ports:
-      - "5002:5000"
+      - '5002:5000'
 
   card-service:
-      image: card-service
-      build:
-        context: ./card-service
-        dockerfile: ./Dockerfile
-      ports:
-        - "5003:5000"
+    image: card-service
+    build:
+      context: ./card-service
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./card-service:/app
+    ports:
+      - '5003:5000'
+
   user-service:
-      image: user-service
-      build:
-        context: ./user-service
-        dockerfile: ./Dockerfile
-      ports:
-        - "5004:5000"
+    image: user-service
+    build:
+      context: ./user-service
+      dockerfile: ./Dockerfile
+    ports:
+      - '5004:5000'
 
   auth-service:
     build:
       context: ./auth-service
       dockerfile: ./Dockerfile
     ports:
-      - "3002:3000"
+      - '3002:3000'
