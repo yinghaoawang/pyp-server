@@ -1,32 +1,32 @@
 version: '3.4'
 
 services:
-  app1:
-    image: app1
+  api-gateway:
+    image: api-gateway
     build:
       context: ./api-gateway
       dockerfile: ./Dockerfile
     ports:
       - "5002:5000"
 
-  app2:
-      image: app2
+  card-service:
+      image: card-service
       build:
-        context: ./image-service
+        context: ./card-service
         dockerfile: ./Dockerfile
       ports:
         - "5003:5000"
-  app3:
-      image: app3
+  user-service:
+      image: user-service
       build:
         context: ./user-service
         dockerfile: ./Dockerfile
       ports:
-        - 5004:5000
+        - "5004:5000"
 
-  node-app:
+  auth-service:
     build:
       context: ./auth-service
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile
     ports:
       - "3002:3000"
