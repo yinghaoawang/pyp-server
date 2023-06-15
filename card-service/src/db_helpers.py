@@ -26,22 +26,6 @@ def get_cards():
     return cardList
 
 
-def insert_items():
-    item_1 = {
-        'item_name': 'Blender',
-        'max_discount': '10%',
-        'batch_number': 'RR450020FRG',
-        'price': 340,
-        'categories': ['kitchen appliance', 'weapon']
-    }
-
-    item_2 = {
-        'item_name': 'Egg',
-        'category': 'food',
-        'quantity': 12,
-        'price': 36,
-        'item_description': 'brown country eggs'
-    }
-
+def insert_card(card_data):
     db = get_database()
-    db['cards'].insert_many([item_1, item_2])
+    db['cards'].insert_one(card_data)
