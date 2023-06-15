@@ -1,15 +1,28 @@
 import json
 from flask import Flask, jsonify, request
-from db_helpers import get_database, insert_items, get_cards
+from db_helpers import get_database, insert_card, get_cards
 
 app = Flask(__name__)
 
 print('Running card service')
 
+
 @app.route('/', methods=['GET'])
 def index():
     cards = get_cards()
     return jsonify(cards)
+
+
+@app.route('/create', methods=['POST'])
+def create():
+    data = request.json
+
+    if data.get('name') is None:
+        return jsonify({'message': 'Missing name'})
+
+    insert_card(data)
+
+    return 'Success'
 
 # @app.route('/', methods=['GET'])
 # def index():
