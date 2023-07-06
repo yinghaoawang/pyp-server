@@ -52,8 +52,13 @@ module.exports = {
     // Listeners
     socket.on('createLobby', (payload) => {
       try {
-        if (lobbyManager.isUserInAnyLobby(getUser().id)) {
-          throw new Error('Cannot create lobby, user is already in one');
+        const existingLobby = lobbyManager.findUsersLobby(getUser().id);
+        if (existingLobby != null) {
+          socket.emit('joinLobby', {
+            lobby: existingLobby,
+            message: 'You are already in a lobby, joined that lobby'
+          });
+          return;
         }
 
         const lobby = lobbyManager.createLobby(getUser(), {
@@ -83,7 +88,10 @@ module.exports = {
       try {
         const existingLobby = lobbyManager.findUsersLobby(getUser().id);
         if (existingLobby != null) {
-          socket.emit('joinLobby', { lobby: existingLobby });
+          socket.emit('joinLobby', {
+            lobby: existingLobby,
+            message: 'You are already in a lobby, joined that lobby'
+          });
           return;
         }
 
