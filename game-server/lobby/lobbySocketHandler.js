@@ -1,15 +1,29 @@
+const { generateLobbyName } = require('../helpers');
 const lobbyManager = require('./LobbyManager');
 
 module.exports = {
   addListeners: (io, socket) => {
     // Helper functions
     function getUser() {
-      return { id: socket.id };
+      return { id: socket.id, username: socket.username };
+    }
+
+    function emitGetUsersLobby(nsp, lobby) {
+      nsp.emit('getUsersLobby', {
+        lobby
+      });
     }
 
     function emitGetLobbies(nsp) {
       nsp.emit('getLobbies', {
         lobbies: lobbyManager.getAvailableLobbies()
+      });
+    }
+
+    function emitCreatedLobby(nsp, lobby) {
+      nsp.emit('createdLobby', {
+        lobbies: lobbyManager.getAvailableLobbies(),
+        lobby
       });
     }
 
@@ -36,15 +50,30 @@ module.exports = {
     emitGetLobbies(socket);
 
     // Listeners
-    socket.on('createLobby', () => {
+    socket.on('createLobby', (payload) => {
       try {
         if (lobbyManager.isUserInAnyLobby(getUser().id)) {
           throw new Error('Cannot create lobby, user is already in one');
         }
 
-        const lobby = lobbyManager.createLobby(getUser());
-        emitGetLobbies(socket);
-        socket.emit('joinLobby', { lobbyId: lobby.id });
+        const lobby = lobbyManager.createLobby(getUser(), {
+          name: payload?.lobbyName || generateLobbyName()
+        });
+        console.log(lobby);
+        emitCreatedLobby(socket, lobby);
+      } catch (error) {
+        emitError(socket, error);
+      }
+    });
+
+    socket.on('getUsersLobby', (payload) => {
+      try {
+        const lobby = lobbyManager.findUsersLobby(getUser().id);
+        if (lobby == null) {
+          throw new Error("Cannot get User's lobby, user is not found in one");
+        }
+
+        emitGetUsersLobby(socket, lobby);
       } catch (error) {
         emitError(socket, error);
       }

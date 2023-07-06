@@ -5,16 +5,15 @@ const Lobby = require('./Lobby');
 const lobbies = new Map();
 
 class LobbyManager {
-  createLobby(user) {
+  createLobby(user, lobbyData) {
     const lobbyId = uuidv4();
-    const lobby = new Lobby(lobbyId);
+    const lobby = new Lobby({ id: lobbyId, ...lobbyData }, user);
     if (lobbies.get(lobbyId) != null) {
       throw new Error('Lobby ID is not unique');
     }
-    lobby.addUser(user);
     lobbies.set(lobbyId, lobby);
 
-    console.log(`Lobby ${lobbyId} created with host ${user.id}`);
+    console.log(`Lobby ${lobbyId} created with host ${user.username}`);
 
     return lobby;
   }
@@ -48,7 +47,6 @@ class LobbyManager {
       if (this.isUserInLobby(lobbyId, userId)) return lobby;
     }
 
-    console.log('User not in any lobby');
     return null;
   }
 
@@ -86,7 +84,7 @@ class LobbyManager {
   }
 
   getAvailableLobbies() {
-    return Array.from(lobbies.keys());
+    return Array.from(lobbies.values());
   }
 }
 
