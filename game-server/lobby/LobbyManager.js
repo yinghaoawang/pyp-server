@@ -64,7 +64,7 @@ class LobbyManager {
 
   joinLobby(lobbyId, user) {
     if (this.isUserInAnyLobby(user.id)) {
-      throw new Error('User');
+      throw new Error('User is already in a lobby');
     }
 
     const lobby = lobbies.get(lobbyId);
@@ -73,6 +73,7 @@ class LobbyManager {
     }
 
     lobby.addUser(user);
+    return lobby;
   }
 
   leaveLobby(lobbyId, user) {

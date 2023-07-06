@@ -81,14 +81,16 @@ module.exports = {
 
     socket.on('joinLobby', (payload) => {
       try {
-        if (lobbyManager.isUserInAnyLobby(getUser().id)) {
-          throw new Error('Cannot join lobby, user is already in one');
+        const existingLobby = lobbyManager.findUsersLobby(getUser().id);
+        if (existingLobby != null) {
+          socket.emit('joinLobby', { lobby: existingLobby });
+          return;
         }
 
         const { lobbyId } = payload;
 
-        lobbyManager.joinLobby(lobbyId, getUser());
-        socket.emit('joinLobby', { lobbyId: lobbyId });
+        const lobby = lobbyManager.joinLobby(lobbyId, getUser());
+        socket.emit('joinLobby', { lobby });
       } catch (error) {
         emitError(socket, error);
       }
